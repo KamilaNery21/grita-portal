@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>grita! — portal de relatórios</title>
+<link href="https://fonts.googleapis.com/css2?family=Lexend:wght@400;700;900&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Inter',sans-serif;background:#191919;color:#fff;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:40px 20px;}
+.logo{font-family:'Lexend',sans-serif;font-weight:900;font-size:42px;margin-bottom:8px;}
+.logo span{display:inline-block;background:#003ff9;padding:4px 18px 4px 14px;clip-path:polygon(0 0,100% 0,93% 100%,0 100%);}
+.sub{font-size:14px;color:#666;margin-bottom:48px;letter-spacing:.05em;text-transform:uppercase;}
+.cards{display:flex;gap:16px;flex-wrap:wrap;justify-content:center;}
+.card{background:#222;border:1.5px solid #333;padding:28px 32px;text-align:center;min-width:200px;transition:all .2s;cursor:pointer;text-decoration:none;color:#fff;}
+.card:hover{border-color:#003ff9;background:#1a1a2e;transform:translateY(-3px);}
+.card-nome{font-family:'Lexend',sans-serif;font-weight:700;font-size:18px;margin-bottom:6px;}
+.card-tipo{font-size:11px;color:#666;text-transform:uppercase;letter-spacing:.08em;}
+.card-arr{font-size:20px;color:#003ff9;margin-top:12px;}
+.footer{margin-top:48px;font-size:11px;color:#444;}
+.footer span{color:#dbe700;}
+</style>
+</head>
+<body>
+<div class="logo"><span>grita!</span></div>
+<div class="sub">portal de relatórios</div>
+<div class="cards" id="cards"></div>
+<div class="footer">powered by <span>grita!</span> agência</div>
+<script>
+// Adicione novos clientes aqui:
+const CLIENTES = [
+  { nome: 'INTERPLUS', arquivo: 'interplus.html' },
+  { nome: 'MARINA',    arquivo: 'marina.html'    },
+];
+
+const container = document.getElementById('cards');
+CLIENTES.forEach(c => {
+  const a = document.createElement('a');
+  a.className = 'card';
+  a.href = c.arquivo;
+  a.innerHTML = `
+    <div class="card-nome">${c.nome}</div>
+    <div class="card-tipo">Dashboard exclusivo</div>
+    <div class="card-arr">→</div>
+  `;
+  container.appendChild(a);
+});
+</script>
+</body>
+</html>

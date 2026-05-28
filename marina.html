@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>grita! — MARINA</title>
+<link href="https://fonts.googleapis.com/css2?family=Lexend:wght@400;700;900&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--azul:#003ff9;--amarelo:#dbe700;--vermelho:#f60000;--preto:#191919;--branco:#fff;--g1:#f4f4f4;--g2:#e8e8e8;--g3:#999;--g4:#555;}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Inter',sans-serif;background:var(--g1);color:var(--preto);min-height:100vh;}
+
+/* HEADER */
+.hdr{background:var(--preto);padding:0 32px;display:flex;align-items:center;justify-content:space-between;height:58px;position:sticky;top:0;z-index:100;}
+.logo{font-family:'Lexend',sans-serif;font-weight:900;font-size:19px;color:#fff;display:flex;align-items:center;gap:10px;}
+.logo-box{background:var(--azul);color:#fff;padding:3px 14px 3px 10px;clip-path:polygon(0 0,100% 0,93% 100%,0 100%);font-size:17px;}
+.logo-sub{font-size:11px;font-weight:400;color:var(--g3);}
+.hdr-right{display:flex;align-items:center;gap:10px;}
+.cli-tag{background:var(--amarelo);color:var(--preto);font-family:'Lexend',sans-serif;font-weight:700;font-size:11px;padding:4px 14px;clip-path:polygon(5px 0,100% 0,calc(100% - 5px) 100%,0 100%);letter-spacing:.04em;}
+.periodo-tag{font-size:11px;color:var(--g3);}
+
+/* NAV */
+.nav{background:var(--preto);border-top:1px solid #2a2a2a;padding:0 32px;display:flex;}
+.nav-btn{font-family:'Inter',sans-serif;font-size:11px;font-weight:600;color:var(--g3);padding:11px 16px;cursor:pointer;border:none;background:none;border-bottom:2px solid transparent;text-transform:uppercase;letter-spacing:.08em;transition:all .15s;}
+.nav-btn:hover{color:#fff;}
+.nav-btn.active{color:var(--amarelo);border-bottom:2px solid var(--amarelo);}
+
+/* FILTROS */
+.filtros{background:#fff;border-bottom:1px solid var(--g2);padding:10px 32px;display:flex;align-items:center;gap:12px;flex-wrap:wrap;}
+.f-label{font-size:10px;font-weight:700;color:var(--g3);text-transform:uppercase;letter-spacing:.1em;}
+.f-sel{font-family:'Inter',sans-serif;font-size:11px;font-weight:500;padding:5px 12px;border:1.5px solid var(--g2);background:#fff;color:var(--g4);cursor:pointer;border-radius:0;clip-path:polygon(4px 0,100% 0,calc(100% - 4px) 100%,0 100%);}
+.f-sel:focus{outline:none;border-color:var(--azul);}
+.f-divider{width:1px;height:18px;background:var(--g2);}
+
+/* MAIN */
+.main{padding:26px 32px;max-width:1300px;}
+.page{display:none;}.page.active{display:block;}
+
+/* GREETING */
+.greet{margin-bottom:22px;}
+.greet h1{font-family:'Lexend',sans-serif;font-weight:900;font-size:26px;line-height:1.1;}
+.greet h1 em{font-style:normal;color:var(--azul);}
+.greet p{font-size:12px;color:var(--g3);margin-top:4px;}
+
+/* KPIs */
+.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:18px;}
+.kpi{background:#fff;border:1.5px solid var(--g2);padding:18px 20px 14px;position:relative;overflow:hidden;transition:transform .15s;}
+.kpi:hover{transform:translateY(-2px);}
+.kpi::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;}
+.kpi.c-az::before{background:var(--azul);}
+.kpi.c-ve::before{background:#00c875;}
+.kpi.c-am::before{background:var(--amarelo);}
+.kpi.c-vm::before{background:var(--vermelho);}
+.kpi-lbl{font-size:10px;font-weight:700;color:var(--g3);text-transform:uppercase;letter-spacing:.1em;margin-bottom:7px;}
+.kpi-val{font-family:'Lexend',sans-serif;font-weight:900;font-size:34px;line-height:1;color:var(--preto);}
+.kpi-desc{font-size:11px;color:var(--g3);margin-top:4px;}
+
+/* CHARTS ROW */
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:18px;}
+.card{background:#fff;border:1.5px solid var(--g2);padding:20px 22px;}
+.card-tit{font-family:'Lexend',sans-serif;font-weight:700;font-size:13px;color:var(--preto);margin-bottom:2px;}
+.card-sub{font-size:11px;color:var(--g3);margin-bottom:14px;}
+
+/* BAR CHART */
+.bar-row{display:flex;align-items:center;gap:10px;margin-bottom:9px;}
+.bar-lbl{font-size:11px;color:var(--g4);width:72px;flex-shrink:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-weight:500;}
+.bar-track{flex:1;height:9px;background:var(--g1);overflow:hidden;}
+.bar-fill{height:100%;transition:width .5s ease;}
+.bar-num{font-family:'Lexend',sans-serif;font-size:12px;font-weight:700;color:var(--preto);width:22px;text-align:right;flex-shrink:0;}
+
+/* TABLE */
+.tbl-card{background:#fff;border:1.5px solid var(--g2);margin-bottom:18px;}
+.tbl-hdr{padding:16px 22px 12px;border-bottom:1px solid var(--g2);}
+table{width:100%;border-collapse:collapse;font-size:12px;}
+th{text-align:left;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--g3);padding:8px 22px;border-bottom:1px solid var(--g2);background:var(--g1);}
+td{padding:11px 22px;color:var(--g4);border-bottom:1px solid var(--g2);vertical-align:middle;}
+tr:last-child td{border-bottom:none;}
+tr:hover td{background:#f7f7ff;}
+td:first-child{font-weight:600;color:var(--preto);}
+
+/* PILLS */
+.pill{display:inline-block;font-size:9px;font-weight:800;padding:3px 10px;text-transform:uppercase;letter-spacing:.06em;clip-path:polygon(4px 0,100% 0,calc(100% - 4px) 100%,0 100%);}
+.p-green{background:#d4f5e2;color:#1a7a45;}
+.p-blue{background:#dce8ff;color:#003aa0;}
+.p-gray{background:#ebebeb;color:#666;}
+
+/* TRAFEGO EMPTY */
+.empty{background:#fff;border:1.5px solid var(--g2);padding:52px 40px;text-align:center;margin-bottom:18px;}
+.empty-ico{font-family:'Lexend',sans-serif;font-weight:900;font-size:38px;color:var(--azul);opacity:.15;margin-bottom:12px;}
+.empty h3{font-family:'Lexend',sans-serif;font-weight:700;font-size:16px;color:var(--preto);margin-bottom:8px;}
+.empty p{font-size:12px;color:var(--g3);max-width:380px;margin:0 auto;line-height:1.6;}
+
+/* LOADING */
+.loading{text-align:center;padding:70px 20px;color:var(--g3);}
+.dot{display:inline-block;width:8px;height:8px;background:var(--azul);border-radius:50%;margin:0 3px;animation:bounce 1.2s ease-in-out infinite;}
+.dot:nth-child(2){animation-delay:.2s;}.dot:nth-child(3){animation-delay:.4s;}
+@keyframes bounce{0%,100%{opacity:.3;transform:scale(.8);}50%{opacity:1;transform:scale(1);}}
+
+/* FOOTER */
+footer{background:var(--preto);padding:18px 32px;display:flex;align-items:center;justify-content:space-between;margin-top:40px;}
+.ft-logo{font-family:'Lexend',sans-serif;font-weight:900;font-size:15px;color:#fff;}
+.ft-logo span{color:var(--amarelo);}
+.ft-note{font-size:10px;color:var(--g3);}
+
+/* RESPONSIVE */
+@media(max-width:780px){
+  .kpis{grid-template-columns:repeat(2,1fr);}
+  .row2{grid-template-columns:1fr;}
+  .main,.hdr,.filtros,.nav{padding-left:16px;padding-right:16px;}
+  .greet h1{font-size:21px;}
+  .kpi-val{font-size:28px;}
+}
+</style>
+</head>
+<body>
+
+<header class="hdr">
+  <div class="logo">
+    <span class="logo-box">grita!</span>
+    <div><div>portal de relatórios</div><div class="logo-sub">agência de conteúdo</div></div>
+  </div>
+  <div class="hdr-right">
+    <span class="periodo-tag" id="h-periodo">—</span>
+    <span class="cli-tag">MARINA</span>
+  </div>
+</header>
+
+<nav class="nav">
+  <button class="nav-btn active" onclick="trocarAba('conteudo',this)">Conteúdo</button>
+  <button class="nav-btn" onclick="trocarAba('trafego',this)">Tráfego pago</button>
+</nav>
+
+<div class="filtros">
+  <span class="f-label">Período</span>
+  <select class="f-sel" id="filtro-mes" onchange="aplicarFiltros()">
+    <option value="">Todos os meses</option>
+  </select>
+  <div class="f-divider"></div>
+  <span class="f-label">Semana</span>
+  <select class="f-sel" id="filtro-sem" onchange="aplicarFiltros()">
+    <option value="">Todas as semanas</option>
+    <option value="Sem 1">Semana 1 (dias 1–7)</option>
+    <option value="Sem 2">Semana 2 (dias 8–14)</option>
+    <option value="Sem 3">Semana 3 (dias 15–21)</option>
+    <option value="Sem 4+">Semana 4+ (dias 22+)</option>
+  </select>
+</div>
+
+<div class="main" id="main">
+  <div class="loading" id="loading">
+    <div style="margin-bottom:14px"><span class="dot"></span><span class="dot"></span><span class="dot"></span></div>
+    <div>Carregando seus dados...</div>
+  </div>
+
+  <!-- CONTEÚDO -->
+  <div class="page" id="page-conteudo">
+    <div class="greet">
+      <h1>Relatório de <em>MARINA</em></h1>
+      <p id="g-sub">Publicações do período</p>
+    </div>
+
+    <div class="kpis">
+      <div class="kpi c-az"><div class="kpi-lbl">Total publicado</div><div class="kpi-val" id="kv-total">—</div><div class="kpi-desc">posts no período</div></div>
+      <div class="kpi c-ve"><div class="kpi-lbl">Postados</div><div class="kpi-val" id="kv-post">—</div><div class="kpi-desc">confirmados</div></div>
+      <div class="kpi c-am"><div class="kpi-lbl">Reels</div><div class="kpi-val" id="kv-reel">—</div><div class="kpi-desc">vídeos curtos</div></div>
+      <div class="kpi c-vm"><div class="kpi-lbl">Outros formatos</div><div class="kpi-val" id="kv-outros">—</div><div class="kpi-desc">fotos e criativos</div></div>
+    </div>
+
+    <div class="row2">
+      <div class="card">
+        <div class="card-tit">Publicações por formato</div>
+        <div class="card-sub">distribuição de tipos no período</div>
+        <div id="chart-formato"></div>
+      </div>
+      <div class="card">
+        <div class="card-tit">Posts por semana</div>
+        <div class="card-sub">frequência de publicação</div>
+        <div id="chart-semana"></div>
+      </div>
+    </div>
+
+    <div class="tbl-card">
+      <div class="tbl-hdr">
+        <div class="card-tit">Histórico de publicações</div>
+        <div class="card-sub" style="margin-bottom:0">todas as postagens do período selecionado</div>
+      </div>
+      <table>
+        <thead><tr><th>Data</th><th>Formato</th><th>Tema</th><th>Status</th></tr></thead>
+        <tbody id="tbl-body"><tr><td colspan="4" style="text-align:center;color:#ccc;padding:28px">Carregando...</td></tr></tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- TRÁFEGO -->
+  <div class="page" id="page-trafego">
+    <div class="greet">
+      <h1>Tráfego pago — <em>MARINA</em></h1>
+      <p>Performance de campanhas e investimentos</p>
+    </div>
+    <div class="kpis">
+      <div class="kpi c-az"><div class="kpi-lbl">Investido</div><div class="kpi-val" id="tv-invest">—</div><div class="kpi-desc">no período</div></div>
+      <div class="kpi c-ve"><div class="kpi-lbl">Leads</div><div class="kpi-val" id="tv-leads">—</div><div class="kpi-desc">captados</div></div>
+      <div class="kpi c-am"><div class="kpi-lbl">CPR médio</div><div class="kpi-val" id="tv-cpr">—</div><div class="kpi-desc">custo por resultado</div></div>
+      <div class="kpi c-vm"><div class="kpi-lbl">Alcance</div><div class="kpi-val" id="tv-alcance">—</div><div class="kpi-desc">pessoas atingidas</div></div>
+    </div>
+    <div class="tbl-card">
+      <div class="tbl-hdr">
+        <div class="card-tit">Campanhas do período</div>
+        <div class="card-sub" style="margin-bottom:0">detalhamento por campanha</div>
+      </div>
+      <table>
+        <thead><tr><th>Data</th><th>Campanha</th><th>Objetivo</th><th>Investido</th><th>Leads</th><th>CPR</th><th>Status</th></tr></thead>
+        <tbody id="tbl-trafego"><tr><td colspan="7" style="text-align:center;color:#ccc;padding:28px">Sem dados de tráfego ainda</td></tr></tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <div class="ft-logo">grita<span>!</span></div>
+  <div class="ft-note" id="ft-note">Atualizado automaticamente via Google Sheets</div>
+</footer>
+
+<script src="dashboard.js"></script>
+<script>
+const CLIENTE = 'MARINA';
+const API_URL = 'https://script.google.com/macros/s/AKfycbz_qbPwRpIHmHgQtBIyvm_iwFC-FzStJUXprhW_LrHuoi9yJ58wZ15136u2cFrEmjlH/exec';
+
+let dadosConteudo = [];
+let dadosTrafego = [];
+
+function getMes(d){
+  if(!d) return '';
+  const p = String(d).split('/');
+  if(p.length<2) return '';
+  const ms=['','Jan','Fev','Mar','Abr','Mai','Jun','Jul','Ago','Set','Out','Nov','Dez'];
+  return `${ms[parseInt(p[1])] || p[1]}/${p[2]||''}`;
+}
+
+function getSem(d){
+  if(!d) return '';
+  const dia = parseInt(String(d).split('/')[0]);
+  if(dia<=7) return 'Sem 1';
+  if(dia<=14) return 'Sem 2';
+  if(dia<=21) return 'Sem 3';
+  return 'Sem 4+';
+}
+
+function popularSelectMeses(dados){
+  const meses = [...new Set(dados.map(d=>getMes(d.Data||d['Data'])).filter(Boolean))].sort((a,b)=>{
+    const [ma,ya] = a.split('/'); const [mb,yb] = b.split('/');
+    const ms=['Jan','Fev','Mar','Abr','Mai','Jun','Jul','Ago','Set','Out','Nov','Dez'];
+    return (parseInt(yb)*12+ms.indexOf(mb))-(parseInt(ya)*12+ms.indexOf(ma));
+  });
+  const sel = document.getElementById('filtro-mes');
+  meses.forEach(m=>{
+    const o = document.createElement('option'); o.value=m; o.textContent=m; sel.appendChild(o);
+  });
+}
+
+function filtrar(dados){
+  const mes = document.getElementById('filtro-mes').value;
+  const sem = document.getElementById('filtro-sem').value;
+  return dados.filter(d=>{
+    const dm = getMes(d.Data||d['Data']);
+    const ds = getSem(d.Data||d['Data']);
+    if(mes && dm!==mes) return false;
+    if(sem && ds!==sem) return false;
+    return true;
+  });
+}
+
+function barChart(entries, cores){
+  const max = Math.max(...entries.map(e=>e[1]),1);
+  const pal = cores||['#003ff9','#dbe700','#f60000','#00c875','#ff6b35'];
+  return entries.map(([l,v],i)=>`
+    <div class="bar-row">
+      <div class="bar-lbl" title="${l}">${l}</div>
+      <div class="bar-track"><div class="bar-fill" style="width:${Math.round(v/max*100)}%;background:${pal[i%pal.length]}"></div></div>
+      <div class="bar-num">${v}</div>
+    </div>`).join('');
+}
+
+function renderConteudo(){
+  const f = filtrar(dadosConteudo);
+  const mes = document.getElementById('filtro-mes').value;
+  const sem = document.getElementById('filtro-sem').value;
+  document.getElementById('h-periodo').textContent = mes || 'Todos os meses';
+  document.getElementById('g-sub').textContent = [mes,sem].filter(Boolean).join(' · ') || 'Todos os períodos';
+
+  document.getElementById('kv-total').textContent = f.length;
+  document.getElementById('kv-post').textContent = f.filter(d=>(d.Status||'').toLowerCase().includes('post')).length;
+  const reels = f.filter(d=>(d.Tipo||'').toLowerCase()==='reel').length;
+  document.getElementById('kv-reel').textContent = reels;
+  document.getElementById('kv-outros').textContent = f.length - reels;
+
+  // Chart formato
+  const fmts = {};
+  f.forEach(d=>{ const t=d.Tipo||'—'; fmts[t]=(fmts[t]||0)+1; });
+  document.getElementById('chart-formato').innerHTML = barChart(Object.entries(fmts).sort((a,b)=>b[1]-a[1])) || '<div style="color:#ccc;font-size:12px;padding:12px 0">Sem dados</div>';
+
+  // Chart semana
+  const sems={'Sem 1':0,'Sem 2':0,'Sem 3':0,'Sem 4+':0};
+  f.forEach(d=>{ const s=getSem(d.Data); if(sems[s]!==undefined) sems[s]++; });
+  document.getElementById('chart-semana').innerHTML = barChart(Object.entries(sems).filter(e=>e[1]>0),['#003ff9','#003ff9','#003ff9','#003ff9']) || '<div style="color:#ccc;font-size:12px;padding:12px 0">Sem dados</div>';
+
+  // Tabela
+  const sorted = [...f].sort((a,b)=>{
+    const fa=(a.Data||'').split('/').reverse().join('');
+    const fb=(b.Data||'').split('/').reverse().join('');
+    return fb.localeCompare(fa);
+  });
+  const pc = s => (s||'').toLowerCase().includes('post')?'p-green':(s||'').toLowerCase().includes('aprova')?'p-blue':'p-gray';
+  document.getElementById('tbl-body').innerHTML = sorted.length
+    ? sorted.map(r=>`<tr><td>${r.Data||'—'}</td><td>${r.Tipo||'—'}</td><td>${r.Tema||'—'}</td><td><span class="pill ${pc(r.Status)}">${r.Status||'—'}</span></td></tr>`).join('')
+    : '<tr><td colspan="4" style="text-align:center;color:#ccc;padding:24px">Nenhum dado neste período</td></tr>';
+}
+
+function renderTrafego(){
+  const f = filtrar(dadosTrafego);
+  if(!f.length){
+    document.getElementById('tbl-trafego').innerHTML='<tr><td colspan="7" style="text-align:center;color:#ccc;padding:28px">Sem dados de tráfego neste período</td></tr>';
+    document.getElementById('tv-invest').textContent='—';
+    document.getElementById('tv-leads').textContent='—';
+    document.getElementById('tv-cpr').textContent='—';
+    document.getElementById('tv-alcance').textContent='—';
+    return;
+  }
+  const totalInvest = f.reduce((s,d)=>s+parseFloat(String(d['Valor Investido']||0).replace(',','.')),0);
+  const totalLeads  = f.reduce((s,d)=>s+parseInt(d.Leads||0),0);
+  const totalAlcance= f.reduce((s,d)=>s+parseInt(d.Alcance||0),0);
+  const cprMedio    = totalLeads>0?(totalInvest/totalLeads):0;
+
+  document.getElementById('tv-invest').textContent  = 'R$'+totalInvest.toLocaleString('pt-BR',{minimumFractionDigits:0,maximumFractionDigits:0});
+  document.getElementById('tv-leads').textContent   = totalLeads;
+  document.getElementById('tv-cpr').textContent     = cprMedio>0?'R$'+cprMedio.toFixed(2):'—';
+  document.getElementById('tv-alcance').textContent = totalAlcance>0?totalAlcance.toLocaleString('pt-BR'):'—';
+
+  document.getElementById('tbl-trafego').innerHTML = f.map(r=>`
+    <tr>
+      <td>${r.Data||'—'}</td>
+      <td>${r.Campanha||'—'}</td>
+      <td>${r.Objetivo||'—'}</td>
+      <td>R$ ${parseFloat(String(r['Valor Investido']||0).replace(',','.')).toLocaleString('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:2})}</td>
+      <td>${r.Leads||'—'}</td>
+      <td>${r.CPR||'—'}</td>
+      <td><span class="pill ${(r.Status||'').toLowerCase().includes('ativ')?'p-green':'p-gray'}">${r.Status||'—'}</span></td>
+    </tr>`).join('');
+}
+
+function aplicarFiltros(){
+  renderConteudo();
+  renderTrafego();
+}
+
+function trocarAba(aba, btn){
+  document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.getElementById('page-'+aba).classList.add('active');
+}
+
+async function carregarSheet(nomeAba){
+  const url = 'https://script.google.com/macros/s/AKfycbz_qbPwRpIHmHgQtBIyvm_iwFC-FzStJUXprhW_LrHuoi9yJ58wZ15136u2cFrEmjlH/exec?sheet=' + encodeURIComponent(nomeAba);
+  const res = await fetch(url);
+  const todos = await res.json();
+  return todos.filter(r => String(r['Cliente'] || r[Object.keys(r)[0]]) === CLIENTE);
+}
+
+async function init(){
+  try{
+    [dadosConteudo, dadosTrafego] = await Promise.all([
+      carregarSheet('CONTEUDO'),
+      carregarSheet('TRAFEGO')
+    ]);
+    popularSelectMeses(dadosConteudo);
+    document.getElementById('loading').style.display='none';
+    document.getElementById('page-conteudo').classList.add('active');
+    const agora = new Date();
+    document.getElementById('ft-note').textContent=`Atualizado em ${agora.toLocaleDateString('pt-BR')} às ${agora.toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'})}`;
+    renderConteudo();
+    renderTrafego();
+  }catch(e){
+    document.getElementById('loading').innerHTML=`<div style="color:#f60000;margin-bottom:8px;font-weight:600">Erro ao carregar dados</div><div style="font-size:12px;color:#999">Certifique-se que a planilha está pública</div>`;
+    console.error(e);
+  }
+}
+
+init();
+</script>
+</body>
+</html>
